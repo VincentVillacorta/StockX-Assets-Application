@@ -1,4 +1,5 @@
 const express = require('express')
+require("./db/mongoose")
 const StockXAPI = require('stockx-api')
 
 const app = express()
