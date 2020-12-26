@@ -3,16 +3,18 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import fetch from 'node-fetch';
 
-const tester = fetch('http://localhost:4000/try', {
-  method: 'POST',
-  body: 'string'
-})
+let testText;
+fetch('http://localhost:3000/try?name=jordan')
+  .then(res => res.json())
+  .then((data) => {
+    console.log(data)
+  }).catch(console.log)
 
-console.log(tester);
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <h1>{testText}</h1>
   </React.StrictMode>,
   document.getElementById('root')
 );
