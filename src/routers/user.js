@@ -2,7 +2,7 @@ const express = require('express')
 const session = require('express-session');
 const User = require('../models/user')
 const StockXAPI = require('stockx-api')
-const {getFullItem} = require('../stock-x/stock-x-functions')
+const {getFullItem, searchItem} = require('../stock-x/stock-x-functions')
 const stockX = new StockXAPI()
 const router = new express.Router()
 
@@ -27,9 +27,9 @@ router.post('/users/login', async (req,res) => {
         const user = await User.findByCredentials(req.body.username,req.body.password)       
         sess = req.session;
         sess.username = req.body.username
-        res.send(user)
+        res.status(200).send(user)
     } catch (e) {
-        res.status(500).send()
+        res.status(400).send(e)
     }
 })
 
@@ -38,9 +38,9 @@ router.post('/users/logout', async (req,res) => {
     try{
         sess = req.session
         delete sess.username
-        res.send()
+        res.status(200).send()
     } catch (e) {
-        res.status(500).send()
+        res.status(500).send(e)
     }
 })
 
@@ -49,9 +49,20 @@ router.get('/users/items', async (req,res) => {
     try{
         sess = req.session
         const user = await User.findByUsername(sess.username)
-        res.send(user.item_collection)
+        res.status(200).send(user.item_collection)
     } catch (e) {
-        res.status(500).send()
+        res.status(500).send(e)
+    }
+})
+
+//Search Item by Name (for search bar)
+router.get('/search', async (req,res) => {
+    try{
+        const itemList = await searchItem(req.query.item_name)
+        res.status(200).send(itemList)
+    } catch (e) {
+        console.log(e)
+        res.status(500).send(e)
     }
 })
 
@@ -59,7 +70,7 @@ router.get('/users/items', async (req,res) => {
 router.get('/users/item', async (req,res) => {
     try{
         const item = await getFullItem(req.query.item_name, req.query.item_id)
-        res.send(item)
+        res.status(200).send(item)
     } catch (e) {
         console.log(e)
         res.status(500).send(e)
@@ -77,7 +88,7 @@ router.get('/users/fullvalue', async (req,res) => {
             const tempItem = await getFullItem(item.item_name, item.item_id)
             fullValue += tempItem.lowest_ask
         }
-        res.send(fullValue.toString())
+        res.status(200).send(fullValue.toString())
     } catch (e) {
         console.log(e)
         res.status(500).send(e)
@@ -93,7 +104,7 @@ router.patch('/users/items', async (req,res) => {
         const user = await User.findByUsername(sess.username)
         user.item_collection.push({item_name,item_id})
         await user.save()
-        res.send(user.item_collection)
+        res.status(200).send(user.item_collection)
     } catch (e) {
         res.status(500).send(e)
     }
@@ -110,7 +121,7 @@ router.delete('/users/items', async (req,res) => {
             item_id != item_id
         })
         await user.save()
-        res.send(user.item_collection)
+        res.status(200).send(user.item_collection)
     } catch (e) {
         res.status(500).send(e)
     }
