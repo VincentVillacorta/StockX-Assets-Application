@@ -7,7 +7,11 @@ const app = express()
 
 app.use(express.json())
 app.use(function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    const allowedOrigins = ['http://localhost:3000', 'https://stock-x-assets.herokuapp.com/']
+    const origin = req.headers.origin;
+    if(allowedOrigins.includes(origin)){   
+        res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    }
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
