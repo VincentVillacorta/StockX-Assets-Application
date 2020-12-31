@@ -13,7 +13,10 @@ app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Credentials', true);
     next();
 });
-app.use(session({secret: process.env.SECRET}));
+app.use(session({
+    secret: process.env.SECRET,
+    secure: false
+}));
 app.use(userRouter)
 
 module.exports = app
