@@ -98,11 +98,13 @@ router.get('/users/fullvalue', async (req,res) => {
 //Add an item for user collection
 router.patch('/users/items', async (req,res) => {
     try{
-        item_name = req.body.item_name
         item_id = req.body.item_id
+        item_name = req.body.item_name
+        item_url = req.body.item_url
+        item_price = req.body.item_price
         sess = req.session
         const user = await User.findByUsername(sess.username)
-        user.item_collection.push({item_name,item_id})
+        user.item_collection.push({item_name,item_id,item_url, item_price})
         await user.save()
         res.status(200).send(user.item_collection)
     } catch (e) {
