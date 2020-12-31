@@ -14,10 +14,7 @@ app.use(function (req, res, next) {
     next();
 });
 app.use(session({
-    secret: process.env.SECRET,
-    resave: false,
-    saveUninitialized: true,
-    cookie: {secure: true, sameSite:'none'}
+    secret: process.env.SECRET
 }));
 app.use(userRouter)
 
