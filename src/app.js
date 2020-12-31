@@ -17,7 +17,7 @@ app.use(session({
     secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true,
-    cookie: {secure: false}
+    cookie: {secure: false, sameSite:'none'}
 }));
 app.use(userRouter)
 
