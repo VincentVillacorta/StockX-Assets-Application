@@ -77,7 +77,7 @@ router.get('/users/item', async (req,res) => {
     }
 })
 
-//Get A User's Full Collection Value based on Lowest Ask
+//Get A User's Full Collection Value based on retail price
 router.get('/users/fullvalue', async (req,res) => {
     try{
         sess = req.session
@@ -85,8 +85,28 @@ router.get('/users/fullvalue', async (req,res) => {
         const itemList = user.item_collection
         let fullValue = 0
         for(const item of itemList) {
-            const tempItem = await getFullItem(item.item_name, item.item_id)
-            fullValue += tempItem.lowest_ask
+           // const tempItem = await getFullItem(item.item_name, item.item_id)
+           // if(tempItem.price)
+            fullValue += item.item_price
+        }
+        res.status(200).send(fullValue.toString())
+    } catch (e) {
+        console.log(e)
+        res.status(500).send(e)
+    }
+})
+
+//Get A User's Full Collection Value based on highest bid price
+router.get('/users/bidvalue', async (req,res) => {
+    try{
+        sess = req.session
+        const user = await User.findByUsername(sess.username)
+        const itemList = user.item_collection
+        let fullValue = 0
+        for(const item of itemList) {
+            //const tempItem = await getFullItem(item.item_name, item.item_id)
+            //if(tempItem.highest_bid)
+                fullValue += item.item_bid_price
         }
         res.status(200).send(fullValue.toString())
     } catch (e) {
@@ -98,13 +118,13 @@ router.get('/users/fullvalue', async (req,res) => {
 //Add an item for user collection
 router.patch('/users/items', async (req,res) => {
     try{
-        item_id = req.body.item_id
         item_name = req.body.item_name
         item_url = req.body.item_url
         item_price = req.body.item_price
+        item_bid_price = req.body.item_bid_price
         sess = req.session
         const user = await User.findByUsername(sess.username)
-        user.item_collection.push({item_name,item_id,item_url, item_price})
+        user.item_collection.push({item_name,item_url, item_price, item_bid_price})
         await user.save()
         res.status(200).send(user.item_collection)
     } catch (e) {
@@ -116,12 +136,12 @@ router.patch('/users/items', async (req,res) => {
 router.delete('/users/items', async (req,res) => {
     try{
         item_name = req.body.item_name
-        item_id = req.body.item_id
         sess = req.session
         const user = await User.findByUsername(sess.username)
-        user.item_collection = user.item_collection.filter((item) => {
-            item_id != item_id
-        })
+        deletionIndex = user.item_collection.findIndex((item) => item.item_name === item_name)
+        if(deletionIndex > -1){
+            user.item_collection.splice(deletionIndex, 1)
+        }
         await user.save()
         res.status(200).send(user.item_collection)
     } catch (e) {

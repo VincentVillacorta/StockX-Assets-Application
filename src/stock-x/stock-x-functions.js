@@ -7,7 +7,7 @@ const searchItem = async (name, id) => {
 
 const getFullItem = async (name, id) => {
     const items = await stockX.newSearchProducts(name, {limit: 5})
-    const item = items.find(element => element.id === id)
+    const item = items.find(element => element.name === name)
     return item
 };
 

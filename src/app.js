@@ -1,11 +1,16 @@
 const express = require('express')
 const session = require('express-session');
+const cors = require("cors");
 require("./db/mongoose")
 const userRouter = require('./routers/user')
 
 const app = express()
 
 app.use(express.json())
+app.use(cors({
+    origin:'http://localhost:3000',
+    credentials: true
+}))
 app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
