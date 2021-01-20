@@ -7,12 +7,12 @@ const userRouter = require('./routers/user')
 const app = express()
 
 app.use(express.json())
-app.use(cors({
-    origin:'https://stock-x-assets.herokuapp.com/',
-    credentials: true
-}))
+// app.use(cors({
+//     origin:'https://stock-x-assets.herokuapp.com/',
+//     credentials: true
+// }))
 app.use(function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', 'https://stock-x-assets.herokuapp.com/');
+    res.setHeader('Access-Control-Allow-Origin', 'https://stock-x-assets.herokuapp.com');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
     res.setHeader('Access-Control-Allow-Credentials', true);
