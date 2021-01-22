@@ -6,10 +6,6 @@ const userRouter = require('./routers/user')
 
 const app = express()
 
-app.listen(3000, () => {
-    console.log(`app is listening to PORT 3000`)
-})
-
 app.use(express.json())
 app.use(cors({origin:true,credentials: true}));
 app.use(function (req, res, next) {
