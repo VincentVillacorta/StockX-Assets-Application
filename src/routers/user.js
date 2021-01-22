@@ -89,7 +89,7 @@ router.get('/users/fullvalue', async (req,res) => {
            // if(tempItem.price)
             fullValue += item.item_price
         }
-        res.status(200).send(fullValue.toString())
+        res.status(200).send({"full_value": fullValue.toString()})
     } catch (e) {
         console.log(e)
         res.status(500).send(e)
@@ -108,7 +108,7 @@ router.get('/users/bidvalue', async (req,res) => {
             //if(tempItem.highest_bid)
                 fullValue += item.item_bid_price
         }
-        res.status(200).send(fullValue.toString())
+        res.status(200).send({"bid_value" : fullValue.toString()})
     } catch (e) {
         console.log(e)
         res.status(500).send(e)
