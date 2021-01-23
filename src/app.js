@@ -18,7 +18,7 @@ app.use(function (req, res, next) {
 });
 app.use(session({
     secret: process.env.SECRET,
-    cookie: {secure: true, sameSite: 'none'}
+    cookie: {secure: false}
 }));
 app.use(userRouter)
 
