@@ -1,9 +1,6 @@
 const express = require('express')
-const session = require('express-session');
 const User = require('../models/user')
-const StockXAPI = require('stockx-api')
 const {getFullItem, searchItem} = require('../stock-x/stock-x-functions')
-const stockX = new StockXAPI()
 const router = new express.Router()
 
 // API ENDPOINTS
